@@ -1,0 +1,439 @@
+Catatan React JS
+
+1. Pendahuluan
+	- Bisa juga digunakan untuk aplikasi mobile
+	- Definisi React JS : JS library untuk membuat user interfaces
+		- hanya akan dimudahkan membuat website dan performa nya akan makin baik
+	- User interface dalam konteks web:
+		- button, input, form , navbar, dll
+		- Menulisnya di dalam Javascript bukan html (semua user interfaces ditulis dalam javascript)
+			- Tujuan nya untuk membuat single page application:
+				- Website yang berpindah tidak melakukan reload
+				- biasanya reload ke page lain karena request ke server untuk file page yang berbeda
+				- kalau nulis halaman home dan dll dgn JS, gak perlu request ke file berbeda lagi karena sudah ada pada javascript (tinggal manipulasi DOM nya)
+				- Pada react : memory management, state sync, sudah diatur dari sananya.
+				- contoh kasus:
+					- ketika ingin menghapus sebuah elemen dgn event listener pada button, ketika button dipencet maka elemen nya akan hilang (ini beserta buttonnya). Namun setelah ilang, eventListener Button nya akan masih ada , ini seharusnya juga ikut dihapus maka dgn removeEventListener(). (ketika add event, nambah memori baru, maka harus diatur management memory-nya)
+					- Kalau di react, tinggal diatur aja datanya, misal klik button nambah elemen tanpa perlu nambah DOM nya secara langsung, tapi menambah data baru ke yang nama nya state, komponen akan menyesuaikan (sinkronisasi) pada perubahan state, sehingga management memory nya jg sudah di-manage scr otomatis.
+	- React Bekerja Berdasarkan komponen 
+		- header component
+		- banner component
+		- Article component (bisa digunakan ulang)
+			- img component
+			- article component
+		- footer component
+
+		- Note : Maka akan lebih fokus spesifik pada komponen2 ini pada tampilan website
+
+	- Website yg menggunakan react:
+		- facebook
+		- instagram
+		- netflix, dll
+
+	- Why Use Reacts:
+		- Learn Once, Write Anywhere ( bisa di website, android app, mobile, VR)
+
+	- Website: http://reactjs.org
+
+	- React dan React DOM
+		- React create element me-return Object Literal
+			- properties:
+				- $$typeof: symbol (elemen ini dibuat dgn apa)
+				- dll
+				- type : tipe dr elemennya, cth : h1
+		- React DOM me-render react object menjadi DOM node.
+
+	- React Fragment:
+			- Untuk me-render dua atau lebih node pada react harus di wrap dgn parent node
+			- Ketika membuat elemen pada react, react akan auto menjadikan elemen nya menjadi parent node, maka tidak boleh ada dua, maka jika ada dua atau lebih , di pakai wrapping, nah wrapping nya ini yang menjadi parent node yang dibaca oleh React.createElement()
+			- namun jika tidak ingin menggunakan parent node, maka Fragment ini dapat digunakan sbg penggantinya (React.Fragment)
+
+	- Nested element:
+			- Pada React.createElement, parameter ketiga digunakan sbg konten dri elemen, jd gk perlu make children
+			- bukan pada parameter ketiga saja, tp parameter keempat dan seterusnya
+			- Jadi pada React.createElement
+					- Parameter 1 : tagname
+					- Parameter 2 : properti dari elemen
+					- parameter 3 - n = children / content
+
+2. JSX
+		- syntax alternativ untuk React komponen atau elemen dgn syntax yg mirip dgn html, ada yg berbeda dari class="" jadi className=""
+		- dianggap sbg javascript expression, namun bukan javascript standard
+		- maka perlu di compile terlebih dahulu agar dapat dijalankan
+		- jadi syntax html itu akan di compile kemudian yg dijalankan adalah spt syntax createElement node
+		- Compile nya dgn tool namanya Babel
+
+		- Babel is a JavaScript compiler
+			- pada babel jg bisa meng-compile syntax JS baru , dapat di compile menjadi syntax versi lama, agar semua browser termasuk yg JS versi lama dapat menjalankan code nya.
+			- juga mentransformasi kode JS yang tidak standard spt JSX, typescript, flow
+			- Babel akan sangat digunakan pada JSX React.JS ini
+			- Untuk production di sarankan untuk di pre-compile, dgn compile pada local machine nya baru di importkan ke html nya (tidak bisa in-browser), jd dripada pake script, lebih baik di-install kan Babel nya pada komputer kita agar compile nya sebelum website dijalankan
+
+			How Babel Works:
+				- Import Babel
+				- Babel membaca script type/babel
+				- mengambil code2 dalam script
+				- Compile kemudian inject ke script itu sbg script JS standard.
+
+			Compiler Babel perlu diberi instruksi :
+				- Dengan plugin: untuk individual task
+						- plugin-syntax-jsx
+						- plugin-transform-react-jsx
+						- etc
+				- preset merupakan sekumpulan plugin, tujuannya sama spt plugin
+						- preset-env : modern JS to JS all browser
+								- cth : console.log(obj.biodata?) , ini JS modern (kalau ada maka tampilkan, kalau gaada void) => optional chaining
+								- dapat ditransformasi ke JS all browser, dgn merubah itu dgn ternary operation biasa
+						- present-react : react non standard to JS standard
+						- present-typescript
+						- present-flow
+
+		- Meng-embed JS expression (variable, function dll), pada JSX adalah dgn {variable}, kalau di string literal kan ${}
+		- Penulisan React.Fragment di JSX <></> , karena tetap harus di wrapping untuk multiple element
+		- Menge-embed empty element ke JSX?
+			- empty element adalah elemen yg tidak punya kontent spt img, input, form (replaced element)
+			- maka penulisannya diberikan subclosing tag, /> diakhir, kalau HTML terbaru tanpa subclosing tag '/' jg udh muncul
+
+		- React Component adalah function Javascript yang me-return React elemen (return penulisan JSX)
+			Penulisan:
+			- nama function nya harus diawali dgn Huruf besar 
+			- Ketika memanggil React component, penulisannya spt tag html: <NamaFucntion/>, kemudian untuk parameter nya sprt penulisan pada props react element
+
+			- disaat menjadikan fungsi jd React component, parameter pun berubah menjadi objek, maka parameter berfungsi sbg props pada elemennya
+			- dgn ini dapat mengabstrak satu elemen menjadi satu react component untuk dapat di re-use
+			(Composition)
+			- dapat jg di export sbg 1 file yg berisi 1 component untuk dapat dipakai dgn bundling dgn contohnya webpack
+
+		- Bagaimana React me-render element ke DOM Tree:
+			- render pada react secara otomatis memanipulasi DOM dalam cara yang paling efisien (dgn penulisan syntax yang sedikit)
+			- sekompleks apapun UI nya, jika ada perubahan pada satu elemen, maka perubahan itu saja yg dilakukan (perubahan ringan)
+
+		- Untuk Babel Tools pada Production:
+			- compile in-browser tidak cocok, karena makin byk kode nya, load di browsernya akan makin lama
+			- maka perlu di pre-compile	;
+				- memindahkan proses compile ke local computer
+
+			- Install Babel perlu node JS karena perlu di node JS
+				- LTS (long term support, cocok untuk production)
+				- Current
+
+3. New Environment
+				- npm : node pacakge manager akan memanage library, package, dependency, tools, dll nya
+				- yarn : sama jg package manager, progress bahasa lebih bagus dan lebih aman dgn menginstall pakai cmd: npm install -g yarn, -g ini maksudnya global
+
+				Step memulai project dgn packet manager (node js):
+				1. init folder project dgn packet manager nya
+					cmd : yarn init -y
+						-> init membuat 1 file bernama package.json, 
+						-> -y flag itu artinya yes, maksudnya agar meng-iya kan semua konfigurasi (yg di prompt-kan) pada initnya
+						-> tanpa -y , akan prompt , namanya, version, main, license, description, etc
+						-> package.json berisi informasi tentang project, termasuk dependencies atau tool library yg diinstall
+
+				Step for Babel tool package instalation:
+				1. Install bbrp package:
+					cmd install package di yarn:
+						- yarn add packageName
+					terdapat 3 package
+						- @babel/core : fungsi inti dari babel
+						- @babel/cli : Program yang dapat dipakai untuk proses compilenya
+						- @babel/preset-react : set of plugin untuk transformasi react ke JS standard
+
+				2. Membuat script proses compile, di package manager
+					cth cmd :
+					"scripts": {
+						"build": "babel src --out-dir public"
+					  }
+					  cara bacanya : memanggil babel untuk compile dgn src sbg source folder nya, kemudian --out-dir untuk menentukan ouput directory dgn public folder yang mnjadi output foldernya
+					  menjalankannya pada yarn: yarn build (karena penulisan key pada scriptnya adalah build), setiap key pada script dapat dijalankan pada yarn
+					  - Kemudian perlu diberi instruksi transformasi nya bagaimana, pakai preset apa
+					  	- maka buat kongifurasi babel file dgn nama .babelrc atau .babelconfig (format penulisannya adalah JSON)
+						- dgn konfigurasi file, diberikan key dgn nama presets yang berisi preset dr babel spt preset-react
+
+					- maka code yg di import ke html dan yg dijalankan di website adalah JS code yang telah di compile
+
+				3. Lite server sbg HTTP server bagi file HTML
+					cmd : yarn add lite-server
+					kemudian untuk menjadikan lite server nge-serve suatu file website isi pada script package.json:
+						"start" : "lite-server --baseDir public"
+							- baseDir merupakan folder untuk di serve, yaitu sesuai nama folder yg ditulis "public"
+							- jika menjalankan cmd "yarn start", maka akan dijalankan lite server nya untuk nge serve folder public
+				
+				Note : script pada package.json
+					"namaKey" : "namaProgamYangDipakai --parameter parameterValue"
+						namaProgamYangDipakai ini bisa babel, lite-server , dll
+
+				Note: lite-server meng-inject script __bs_script__ untuk auto me-refresh ketika ada perubahan
+				lite-server tidak ada hubungannya dgn babel (independen), hanya serve static file di folder outputnya
+				- maka jika melakukan perubahan di folder source nya (yg ada JSX), harus perlu dicompile lagi terlebih dahulu, kemudian jalankan lagi lite-servernya
+				- maka harus perlu dijadikan babel agar otomatis meng-compile ketika ada perubahan pada folder src nya
+				- Ditambahkan parameter -w diakhir script babel compile, untuk 'watch' jika ada perubahan agar mengcompile lagi, jadinya ia tidak keluar dari eksekusi command nya
+				- namun klo gitu gimana caranya agar menjalankan command lain ? sedangkan command nya sedang 'watch'
+					- agar dapat menjalankan lite-servernya jg, maka dibuat script yang menggabungkan compile dan jg lite-servernya (cara simplenya)
+						cmd : "namaKey" : "yarn script1 & yarn scrip2" , digabungkan dgn '&' , untuk dapat menjalankan keduanya perlu di install package 'concurrently'
+						cmd diatas sprtnya tidak bisa dilakukan di Windows, maka alternativenya dgn package concurrently dgn script:
+						- "concurrently --kill-others \"yarn script1\" \"yarn script2\""
+						- kill-others disini artinya: With --kill-others switch, all commands are killed if one dies
+
+4. React element style:
+	Untuk Inline HTML element style:
+		- style perlu di berikan dgn objek (pada inline style html element )
+		- kurung kurawal untuk JS expression, kemudian kurung kurawal lg untuk objek nya
+		- style yang memakai '-' diganti dgn camelCase, sama spt JS biasa 
+		- untuk px tidak perlu di tulis, dan tanpa kutip
+	Vendor prefixes:
+		- diawali dgn huruf besar (misal msTransition, WebkitTransform, dll)
+		- Vendor prefixes are one way browsers use to give us CSS developers access to newer features not yet considered stable. Before going on keep in mind this approach is declining in popularity though, in favour of using experimental flags, which must be enabled explicitly in the user's browser
+
+	External CSS sama sprt HTML biasa (masukkan dgn className pada react)
+
+5. Event Handling:
+	- HTML event handler : <button onclick="namaFunction()"
+	- di React sama namun dgn camelCase misal onClick
+	- Jika ingin memasukkan fungsi yang sudah dibuat dgn parameter pada event listener, maka dapat digunakan method bind , parameter pertama adalah (this->object pada event nya), setelah itu baru parameter yg diberi ke fungsi
+		cth: onClick = NamaFunction.bind(this, parameterFungsi)
+		- bind memproduksi function baru, dgn argument itu
+
+6. React Component dan State:
+	- state adalah data yang ada didalam react component;
+	- ketika data statenya diubah, component akan melakukan render ulang
+	- membuat state seperti variable
+		- cth: const state = React.useState(value); value ini , seolah2 value dari variabel
+	- Dalam state adalah Array dgn 2 index:
+		- index 0 : adalah value pada data saat itu
+		- index 1 : adalah function untuk update data value tersebut, function : dispatchAction(value), sbnrnya nama nya berubah2 tergantung dr reactnya
+
+		penulisannya agar dapat dipakai state array:
+			const count = state[0] //index ke 0 ini merupakan value state saat itu
+			const updateCount = state[1]; //method pada state disimpan di expression updateCount, nanti fungsi dgn nama itu yg dijalankan
+
+			dgn updateCount(method perubahan nilai state) ini, dapat memanipulasi state nya dgn jg menggunakan current value pada state agar dapat diubah.
+
+7. Component lifecycle (effect hook)
+	- Memungkinkan kita eksekusi sebuah function dimana waktu eksekusi nya itu dsaat komponen di-render (effect hooks)
+	- Dengan menggunakan React.useEffect(function) -> method ini akan dijalankan disaat komponen di render, saat sudah dirender langsung diakses fungsinya
+	- Akan dijalankan functionnya saat me-render apapun itu kondisinya pada komponen
+		- namun jika ingin fungsinya dijalankannya khusus untuk render satu state nya itu saja
+		- maka pada React.useEffect() argument satu adalah function nya, ini ada argument kedua yaitu array untuk state yang mau dipantau.
+		- dgn ini fungsi nya seolah2 dikaitkan dengan suatu state untuk dipantau, akan selalu di eksekusi ketika ada perubahan pada that specific state (dependencies state)
+	- useEffect ini di hook ke komponen react
+
+	- useEffect:
+		- ketika di render ulang blom tentu di eksekusi, ketika array statenya dikasih dgn array kosong []
+		- maka array kosong ini maksudnya untuk menjalankan useEffect() pada awal render saja, ketika ada perubahan dia sama sekali tidak menjalankan effect functionnya
+			- penerapannya misal dgn data fetching (article, dll )
+	
+		- Pertama kali render komponen ke DOM tree pada react istilahnya adalah Mount.
+		- Class component bernama 'component did mount' -> apakah component sudah di mount apa belom, klo sudah ya di eksekusi
+		- Untuk yang tidak di beri argument kedua , class component bernama 'component did update', setiap ada perubahan di eksekusi
+
+		- Class component:
+			- array kosong pada function component : componentDidMount(function)
+			- tidak ada pemberian array state pada function component : componentDidUpdate(function)
+			- function component lebih simple daripada class component
+		- function component:
+			- useEffect(function, [array state]) : kalo ini langsung dua parameter, lebih simple
+
+		- Pada useEffect jg bisa init library client-side, untuk melihat apakah komponen sudah di render
+			- contoh init carousel, akan dijalankan setelah di render , harus di-init sekali saja library, maka dgn array kosong
+			- Client side routing : ketika kita pindah halaman, browser gk reload, DOM nya yg berubah doang
+				- jadi kalo ada terjadi ini, init library nya masih ada karena tidak ada reload sehingga masih ada di memory
+				- maka ada yg namanya cleanup, pada library biasanya ada method destroy untuk menghapus init instance dr library tersebut
+				-cth pada carousel :
+
+					const carousel = new Slick;
+
+					//cleanup -> bakal di eksekusi ketika ada perubahan state atau komponen terhapus
+					return function() {
+						carousel.destroy(); //untuk component unmount (disaat component dilepas dari DOM Tree) ini dieksekusi
+						// ketika dia pindah ke halaman yang lain, dia akan menjalankan fungsi unmount, ketika dibalikin lagi ke halaman sebelumnya, maka function mount nya dijalankan lagi
+					}; //fungsi ini diletakkan didalam function argumen pada useEffect()
+
+				- Maka itulah dibutuhkan cleanup untuk membersihkan memori
+				- Kalau tidak dicleanup, init nya tidak hilang, kemudian jika berpindah dari komponen yg berbeda ke komponen ini lgi, jadi nya init dijalankan dua kali. karena init harusnya sekali saja jadi perlu di cleanup
+				- dgn cleanup, dipastikan init library hanya dilakukan sekali saja.
+
+8. Conditional Rendering:
+	- if(state == ?){
+		return componentnya
+	}
+	- dimanfaatkan ketika ada render ulang, karena state nya berubah , render berulang maka menjalankan kode yang ada dalam component (functionnya) sehingga di cek kode yg seleksi kondisi, kalau true maka dijalankan conditionalnya
+	- membuat condition ditengah JSX syntax dgn ternary operator dgn memasukan JS expresion {stateCondition ? true : false}
+	- Kemudian jg bisa memasukkan JSX ke sela2 JS expression karena akan ikut ke compile juga
+		cth: {state ? <tag>text</tag> : <tag>text</tag>}
+		tips agar tidak ingin ada kondisi false, dripada dgn string kosong karena memakai memori
+		lebih baik dgn operator AND '&&', cth:
+		{state && konten}
+
+9. React DOM Manipulation (Reference Hook)
+	- agar dapat di manipulasi komponen react nya, maka pastikan manipulasi dilakukan setelah ter-render komponennya
+	- Maka di gunakan method useEffect() untuk itu
+	- namun dgn useEffect jika ingin manipulasi DOM , harus ditangkap terlabih dahulu dgn document.querySelector dll
+	- agar tidak melakukan itu dapat digunakan method: React.useRef(null), null sbg default value
+	- kemudian pada elemen JSX dapat diberikan props ref="reference", setelah itu langsung akan ditangkap node nya scr auto krn sudah di refer (refer hook)
+	- reference.current.textContent = '', node yang ditangkap reference berada di properti current, disitu dapat dilakukan manipulasi DOM
+	- ref jg dapat dilakukan untuk set value untuk id, counter, var lainnya
+	- Perbedaan dgn useState() -> pada useRef(null), value awalnya yg null setelah itu berubah menjadi node itu tidak perlu ada render, kalau useState(val) jika ada perubahan pada value nya akan melakukan render
+
+10. React Hooks: (useEffect, useState, useRef)
+	- Hooks adalah cara react membawa fitur react sebelumnya spt state management yg ada pada class component ke function component
+
+11. React List dan Keys (Render Multiple Component)
+	- React List dapat diRender dari array (ntah dari API ,JSON dll,) ketika array bertambah, otomatis elemen react bertambah
+	- Pada JSX, masing2 child react list harus diberikan key yang unique 
+	- Key berfungsi untuk React mengidentifikasi bahwa elemen tersebut yang berubah
+
+12. React Form
+	- default behavior form itu menavigasi ke halaman baru
+	- form action : kemana mengirim data nya, method nya form jg get dan post 
+	- default method : get, default action : navigate ke halaman itu sendiri
+	- untuk menghentikan nya digunakan method preventDefault
+
+	- uncontrol component mengandalkan DOM dgn useRef (mengakses input form dari value DOM element)
+	- control component mengandalkan useState (cth mengakses input form dari perubahan state) -> cara react
+		- agar lebih afdhol, current state nya jg perlu dijadikan value default pada input (jd full mengikuti state, elemen lain mungkin dapat disesuaikan)
+		- Sehingga komponen bergantung pada state.
+
+13. Data Fetching
+	- gunakan useEffect saat mount (array kosong parameter kedua)
+	- pada fungsi useEffect lebih baik menggunakan async await untuk mengatasi asynchronous
+		- dgn ini sudah gk perlu make then()
+	- saat membuat react list dari data fetching, id pada setiap objek json bisa digunakan sbg key
+	- State sangat dapat digunakan untuk fetching misal pada perubahan data, setiap fetch , data nya berubah
+	- saat fetching, kan menunggu , state jg bisa digunakan untuk loading
+	Summary : Jadi react itu sangat bermain dengan state.
+	- Side effect react merupakan sesuatu hal yang dilakukan di dalam useEffect()
+
+14. Tambahan :
+	- state bisa lebih dari satu dalam satu komponen
+	- Kalo UI komplex soal render bakal berat dgn vanilla JS, namun dgn react sudah ter-manage, karena render sesuai state doang/
+
+Summary Kedua:
+	- Babel Pre-compile untuk production
+	- JSX dan state, styling, event handling, httprequest, manipulasi DOM --> inti dari React
+	- life cycle (fungsi saat mount, unmount, rerender dll)
+	- conditional rendering
+
+15. React Environment: (Toolchain)
+	- Setup-nya tidak seperti ini, kalau aplikasi scale, UI complex, perlu di setup agar mempermudah
+	- cara umum orang dengan React:
+		- tidak pakai CDN script dari React, namun pakai module bundler spt webpack
+		- jadi gak pakai script tag, jadi di - import di JS nya, CSS nya jg di import (jd gk perlu di import di HTML)
+			- webpack nge handle import nya apakah pas runtime atau build process di ekstrak jadi file terpisah kemungkinan di import
+		- sebenernya tanpa module bundler tetap bisa import, namun dgn module bundler bisa di optimalkan.
+		- Webpack umumnya semua dependencies jadi satu file.
+			- Meski bisa di-split tergantung kebutuhan.
+		- Membuat komponen terpisah, gak semua UI ditaruh di 1 script, jadi di import (dari file extract yang terpisah)
+			- dgn webpack semua komponen ini bisa di bundle menjadi single file. single file ini yang diimport
+		- Setup nya agak ribet (perlu belajar webpack lagi), makanya biasanya org menggunakan 1 tool yang bernama "create-react-app" untuk init
+			- sebelummya init dgn yarn, scriptnya , dll-nya semua nya manual
+			- dgn create-react-app semuanya udh di setup, webpacknya , bundlernya, babelnya, css nya, dll
+			- kemudian saat mengubah suatu elemen, dia menggunakan react-refresh , sehingga tidk perlu full reload spt pada lite server
+
+		Step init with CRA (Create React App) :
+		1. cmd : npx create-react-app nama-folder-untuk-projek (makanya posisi cd nya di folder sbeelumnya agar menjalankan command ini)
+		2. cmd : cd nama-folder-untuk-projek (perhatikan penamaan folder agar dpaat bekerja, lowercase dan dash)
+		3. cmd : yarn start
+
+		Folder pada CRA :
+		- node modules : dependencies yg di generate packet manager
+		- folder public : tempat dimana static file ditaro (ico, html, gambar, json)
+			- file HTML tidak ada script tag karena hanya merupakan template yang akan di ambil module bundler yg digunakan oleh CRA, kemudian akan di manage, ntah diinject kan script tag, style css, dll
+		- folder src : Kode aplikasi kita, ntah react component, function code, dll (contoh satu komponen 'App')
+			- terdapat import css ke JS (yang dimungkinkan oleh module bundler)
+			- import logo.svg
+			- jadi semuanya ada di Javascript
+			- file index.js dan index.css merupakan instance atau pintu masuk (karena menaruh ReactDOM (render) komponennya di sini)
+			- import bisa dgn JS ES6 namun dng modul bundler bakal lebih di optimisasi dan di bundle menjadi satu file
+				- gk mungkin semuanya ada di satu file, komponennya di pisah punya filae masing2
+				- contoh App.js di export, kemudian di import di file index.js
+				- cth import : import React from 'react'
+							   import reportWebVitals from './reportWebVitals.js (untuk measuring performance)
+		- gitignore : dgn ini , gaakan di push ke git repository (contoh didalamnya ada node_modules)
+		- terdapat README.md sbg guide dri CRA nya
+
+	- HMR (hot module replacement) :
+		- ketika update isi komponen, gk langsung reload dulu, namun elemnnya langsung ilang (apply change ke komponen yg terdampak aja)
+			- mirip dgn saat perubahan state (react refresh itu)
+			- yang tidak ada perubahan , dibiarkan
+
+	- Bagaimana kode bisa di maintenance dgn mudah (separate the component), agar bisa import di bbrp tempat yg berbeda
+	- Pastikan component di "export default namaCo
+	mponent" agar dapat di import di file lain
+	- export ini syntax JS ES6, JS ES6 punya Module yang bisa memisahkan function atau utilitas ke file2 yg berbeda
+		- kalau bukan export default, maka cara import nya dgn curly braces
+		- export selain function spt variable, const , dll jg bisa
+		- Ini cara membuat komponen terpisah di CRA dgn bantuan export dan import dari JS ES6
+
+	- Styling pada CRA
+		- di Html gaada CSS dan script JS yang di import karena semua nya di manage oleh Webpack
+		- Ketika menjalankan "yarn start" , dia akan build suatu file HTML untuk serve browser nya , maka baru diinject-kan CSS dan JS-nya.
+		- Untuk CSS global, di import nya di index.js, agar semua bisa akses
+
+	- Static File:
+		- Semua file di folder Public
+		- jd misal mau img , ambil src img nya dari folder publicnya
+
+	- jika ingin menggunakan react di component pd CRA, perlu import : import React from 'react'
+		- namun dibanding import semua React, lebih baik import function yg digunakan saja , misal useState :
+			import {useState} from 'react'
+
+	- Deploy Aplikasi untuk Production pada CRA perlu di build dulu agar siap untuk production
+		- di bundle chunk2 dan generate file yg gk standard jadi static
+		- generate folder baru bernama build, maka folder ini yg di deploy ke server dll.
+		- semuanya udh jdi file static yg gk perlu di proses lagi (file2 deployment di bundle kemudian di generate jadi file static production)
+		- pada node js ada package serve untuk HTTP server serve file static
+		- di install package server nya scr global atau bisa testing saja dulu dgn "npx"
+		- kemudian di production file CSS nya sudah terpisah dgn link, gak speerti pada deployment masih di inject
+
+16. React Router:
+	- single page application (berpindah halmaan tanpa perlu full reload)
+	- React Router merupakan third party library untuk react.
+	- React hanya sebatas UI, untuk single page app kita perlu router nya agar di render komponennya berdasarkan path nya dgn ada slash -> "/about" contohnya
+	- untuk install : npm install react-router-dom@6, atau yarn add react-router-dom@6 : terdapat react router dom yg didalamnya trdapat history
+	- init pada file src dengan wrap component dgn <BrowserRouter></BrowserRouter>
+	- Package History meng-handle soal path slash atau URL path lain untuk tidak full reload (menggunakan API browser history maka dapat dimanipulasi slash path nya (push state, replace state))
+	- React Router DOM merupakan bagian react nya, dan untuk browser nya dibantu history API
+	- <Routes> dan <Route> tidak di render, maka dianggap spt Fragment (<></>), hanya dipakai internal pada react-router-dom
+
+17. Nested Route (dari path ke path lain '/about/details )
+	- Untuk mempertahankan konten dari /about, pada nested route nya maka caranya adalah menjadikan path nya itu jadi child dari path sebelumnya
+		- Dengan cara itu , tidak tertampil komponen yg dirender karena butuh outlet pada parent route
+		- <Outlet /> menjadikan saat ia merender child route, tetap terbawa komponen parent routenya
+
+18. Mengambil URL params dgn react router:
+	- contohnya ada list article, kemudian pergi ke salah satu article , back end akan mengambil URL params untuk query ke database atau API
+	- Kalau banyak, route nya akan ribet klo ditulis satu2
+	- Maka perlu diambil url parameter dgn tanda ':' kemudian nama key misal nya slug
+		= cth : /about/:slug
+	- Kemudian untuk akses parameter URL tersebut dapat digunakan method useParams();, menghasilkan objek dgn key slug dan value url paramterenya
+
+19. No Match Route:
+	- 404 Not found misalnya
+	- maka dgn Route path="*"
+
+20. Redirect pada React Router:
+	- misal setelah sukses login pindah halaman
+	- gunakan useNavigate() method dari react-router-dom untuk me-redirect URL
+
+21. Deploy App to Netlify:
+	Method 1:
+		- upload 'build' file manual, setelah di build untuk static file
+		- karena ini react, single page app tidak mempunyai file lain ketika url nya diarahkan kesitu
+			- netlify atau lainnya nganggep ketika ke path tertentu, itu ngaggep file baru, makanya gaada
+			- semua yg direact file nya nge refer ke index
+			- maka harus dibuat file _redirects , kemudian tuliskan /* /index.html 200
+				- taruh lebih baik di public, karena semua file public akan masuk ke build
+				- _redirects merupakan bagian dari netlify bukan reactnya
+
+	Method 2 dgn cli:
+		1. install netlify CLI , cmd : npm i -g netlify-cli
+		2. build app
+		3. Deploy:
+			- cmd : netlify deploy
+				- link to site or create new site?
+				- team (di netlify nya)
+				- Site Name 
+				- Publish directory : build 
+				- Menghasilkan draft URL
+				(untuk draft dulu agar tes)
+			- klao sudah siap untuk production, cmd : netlify deploy --prod

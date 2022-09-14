@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Latihan React JS</title>
+</head>
+<body>
+
+	<div id="root"></div>
+
+	<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+ 	<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+ 	<script>
+ 		const root = ReactDOM.createRoot(document.getElementById('root')); // syntax react dom ver 18 menggantikan ver 17
+ 		// const element = React.createElement('h1', {
+ 		// 	children: 'Hello from React!', //children ini untuk child dari h1 (textContent-nya)
+ 		// 	className: 'heading-1' //menambah class pada elemen ini
+ 		// }); // mirip spt vanilla JS , document diganti dgn React, parameter kedua ini adalah object untuk memanipulasi properti pada elemen node nya (props)
+
+ 		// ReactDOM.render(element, root); //parameter 1 : elemen yang ingin dirender, parameter 2 : tempat dimana elemen akan dirender: syntax pada react js ver 17
+
+ 		// const p1 = React.createElement('p', {
+ 		// 	children: 'Hello paragraf 1'
+ 		// });
+
+ 		// const p2 = React.createElement('p', {
+ 		// 	children: 'Hello paragraf 2'
+ 		// });
+
+ 		// // kalau mau render dua elemen atau lebih harus di wrapping dulu oleh parent node, misal dgn div:
+ 		// // const wrapper = React.createElement('div', {
+ 		// // 	children: [p1,p2]
+ 		// // });
+
+ 		// // kalau tidak mau di wrap dgn parent node apapun dan langsung saja menyatukan elemennya maka bisa menggunakan Fragment
+ 		// const combineEl = React.createElement(React.Fragment, {
+ 		// 	children: [p1, p2]
+ 		// }); 
+
+ 		// const li1 = React.createElement('li', null, 'Apple');
+ 		// const li2 = React.createElement('li', null, 'Grape');
+ 		// const li3 = React.createElement('li', null, 'Mango');
+ 			// code diatas ini bisa langsung dimasukkan saja ke parameter ketiga dan seterus nya pada ul
+
+
+ 		const elementUl = React.createElement('ul', {
+ 			className: 'list'
+ 		}, 
+ 			React.createElement('li', null, 'Apple'),
+ 			React.createElement('li', null, 'Grape'),
+ 			React.createElement('li', null, 'Mango')
+ 		); //parameter ketiga sbg content dri elemen
+ 			// parameter ketiga dan seterusnya bisa jd children namun jadinya tidak bisa memasukkan array ke situ, setiap parameter dituliskan elemen/children perbaris
+
+ 			// namun code spt ini harus selalu membuat createElement akan sangat panjang dan ribet, maka solusinya dgn JSX
+
+ 		// syntax baru pada react js ver 18
+ 		root.render(elementUl);
+
+ 		console.log(wrapper);
+ 	</script>
+</body>
+</html>
